@@ -1,8 +1,12 @@
+import 'package:bmi_calculator/calculate_bmi.dart';
 import 'package:flutter/material.dart';
-import 'icon_card.dart';
-import 'reusable_card.dart';
+import 'package:bmi_calculator/components/icon_card.dart';
+import 'package:bmi_calculator/components/reusable_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'constants.dart';
+import 'package:bmi_calculator/constants.dart';
+import 'results_page.dart';
+import 'package:bmi_calculator/components/round_shape_button.dart';
+import 'package:bmi_calculator/components/bottomContainerButton.dart';
 
 // Enum for determinig gender of the person
 enum Gender {
@@ -230,50 +234,22 @@ class _InputPageState extends State<InputPage> {
             ),
           ),
           //BMI Submit button
-          TextButton(
-            onPressed: () {},
-            child: Container(
-              height: kbottomContainerHeight,
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  'Get Your BMI',
-                  style: TextStyle(
-                    color: kactiveCardColor,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: kbottomContainerColor,
-                borderRadius: BorderRadius.all(Radius.circular(15.0)),
-              ),
-            ),
+          BottomContainerButton(
+            text: 'Get Your BMI',
+            onPress: () {
+              CalculateBMI calculate = CalculateBMI();
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ResultsPage(
+                            valueText: calculate.getResultValue(height, weight),
+                            desciptionText: calculate.getResultInterpretation(),
+                            resultText: calculate.getResultText(),
+                          )));
+            },
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CustomRoundShapeButtons extends StatelessWidget {
-  CustomRoundShapeButtons({@required this.onPress, @required this.icon});
-
-  final VoidCallback? onPress;
-  final IconData? icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: onPress,
-      elevation: 0.0,
-      fillColor: Colors.white54,
-      shape: CircleBorder(),
-      child: Icon(icon),
-      constraints: BoxConstraints(
-        minHeight: 50.0,
-        minWidth: 50.0,
       ),
     );
   }
